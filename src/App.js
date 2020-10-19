@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import PIVCalculator from './components/PIVCalculator';
+import { Route, Switch, BrowserRouter as Router } from 'react-router-dom'
+import NavigationBar from './components/NavigationBar'
+import Home from './pages/Home'
+import References from './pages/References'
+import Calculations from './pages/Calculations'
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <NavigationBar></NavigationBar>
+          <PIVCalculator></PIVCalculator>
+          <Switch>
+            <Route path='/references' component={References} />
+            <Route path='/calculations' component={Calculations} />
+            <Route path="/" component={Home} />
+          </Switch>   
+        </header>
+      </div>
+      
+    </Router>
   );
 }
 

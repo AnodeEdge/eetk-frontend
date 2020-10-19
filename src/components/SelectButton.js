@@ -1,0 +1,21 @@
+import React from 'react';
+
+function SelectButton(props) {
+  const handleClick = (evt) => {
+    evt.preventDefault();
+    props.callback(
+      {
+      id: props.id,
+      value: evt.target.value
+      })
+    }
+
+  return (
+    <button
+    value={props.value}
+    onClick={handleClick}
+    >{props.inputDescription}</button>
+  )
+}
+
+export default SelectButton
