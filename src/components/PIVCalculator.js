@@ -112,7 +112,7 @@ function PIVCalculator(props) {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div style={{display: "flex"}}>
+        <div style={{display: "flex", justifyContent: "center"}}>
           {buttonInputDefaults.map((data) => (
             <SelectButton
             id={data.id}
