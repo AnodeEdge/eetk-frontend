@@ -1,12 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import CalcRoutes from "../routes/CalcRoutes";
 import "../css/Calculations.css";
 import TileGrid from "../components/TileGrid";
 
-function Calculations() {
-  const [showTiles, setShowTiles] = React.useState(true);
-
+function Calculations(props) {
+  const { setShowTiles, showTiles } = props;
   const handleSelection = (isSelected) => {
     setShowTiles(!isSelected);
   };
@@ -18,34 +16,20 @@ function Calculations() {
         "Calculator for converting between power, current, or voltage in AC systems including power factor, single phase, and three phase.",
       to: "/calculations/piv",
     },
-    {
-      title: "Test Calc",
-      description: "Lorem Ipsum...",
-    },
-    {
-      title: "Test Calc",
-      description: "Lorem Ipsum...",
-    },
-    {
-      title: "Test Calc",
-      description: "Lorem Ipsum...",
-    },
   ];
 
   return (
-    <>
+    <div>
       {showTiles && (
         <TileGrid
-          calculatorTileData={calculatorTileData}
+          TileData={calculatorTileData}
           handleSelection={handleSelection}
         />
       )}
-      <CalcRoutes />
-    </>
+      {!showTiles && <CalcRoutes setShowTiles={setShowTiles} />}
+    </div>
   );
 }
 
 export default Calculations;
-{
-  /* <Link to="/calculations/piv"></Link> */
-}
+

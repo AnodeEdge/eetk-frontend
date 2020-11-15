@@ -13,18 +13,18 @@ function InputValueField(props) {
   };
 
   return (
-    <>
-    <label className="label">
-      {props.inputDescription}
-      <input
-        type="text"
-        id={props.id}
-        value={inputValue}
-        onChange={handleChange}
-      />
+    <div style={props.componentStyle}>
+      <label style={props.headerStyle}>{props.inputDescription}</label>
+      <div>
+        <input
+          type="text"
+          id={props.id}
+          value={inputValue}
+          onChange={handleChange}
+        />
       {props.unit}
-    </label>
-    </>
+      </div>
+    </div>
   );
 }
 

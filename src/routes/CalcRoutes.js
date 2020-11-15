@@ -5,10 +5,10 @@ import { Route, Switch } from 'react-router-dom'
 import PIVCalculator from '../components/PIVCalculator';
 
 
-function CalcRoute() {
+function CalcRoute(props) {
   return(
     <Switch>
-      <Route path='/calculations/piv' component={PIVCalculator} />
+      <Route path='/calculations/piv' component={() => <PIVCalculator setShowTiles={props.setShowTiles} />} />
     </Switch>   
   )
 }

@@ -1,17 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../css/TileGrid.css";
 
 function Tile(props) {
-  const onClick = (evt) => {};
+  const handleClick = (evt) => {
+    props.handleSelection(true)
+  };
 
   return (
-    <div className="card w3-card w3-hover-shadow">
-      <header className="w3-container">
-        <h6>{props.title}</h6>
-      </header>
-      <div className="w3-container">
-        <p>{props.description}</p>
-      </div>
+    <div className="card w3-card w3-hover-shadow" onClick={handleClick}>
+      <Link to={props.to}>
+        <header className="w3-container">
+          <h6>{props.title}</h6>
+        </header>
+        <div className="w3-container">
+          <p>{props.description}</p>
+        </div>
+      </Link>
     </div>
   );
 }
@@ -19,8 +24,13 @@ function Tile(props) {
 function TileGrid(props) {
   return (
     <div className="tile-grid">
-      {props.calculatorTileData.map((data) => (
-        <Tile title={data.title} description={data.description}></Tile>
+      {props.TileData.map((data) => (
+        <Tile 
+        title={data.title} 
+        description={data.description}
+        to={data.to}
+        handleSelection={props.handleSelection}
+        ></Tile>
       ))}
     </div>
   );

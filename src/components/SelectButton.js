@@ -12,6 +12,7 @@ function SelectButton(props) {
 
   return (
     <button
+    style={props.style}
     value={props.value}
     onClick={handleClick}
     >{props.inputDescription}</button>

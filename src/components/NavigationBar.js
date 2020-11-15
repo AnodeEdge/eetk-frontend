@@ -1,5 +1,4 @@
 // primary navigation bar
-
 import React from 'react';
 import '../css/NavigationBar.css'
 import ListLink from '../components/ListLink'
@@ -12,7 +11,7 @@ function NavigationBar() {
  
   // Modify Navigation Bar Links Here
   const linkData = [
-    { reference: "/", value: "Calculations" },
+    { reference: "/calculations", value: "Calculations" },
     { reference: "/references", value: "References" },
     { reference: "/about", value: "About" },
     { reference: "/contact", value: "Contact" },
@@ -30,7 +29,7 @@ function NavigationBar() {
               ></img>
             </div>
             <div className = "nav-flex-item">
-              <label className="title">YouConduit</label>
+              <label className="title">solvEE</label>
             </div>
             <ul className="nav-flex-ul">
               {linkData.map( (data) => 
