@@ -29,7 +29,7 @@ function NavigationBar() {
               ></img>
             </div>
             <div className = "nav-flex-item">
-              <label className="title">solvEE</label>
+              <label className="title">Electrical Engineering Tool Box</label>
             </div>
             <ul className="nav-flex-ul">
               {linkData.map( (data) => 

@@ -1,43 +1,42 @@
-
 const calculate3PhasePower = (data) => {
   return {
-    id: "power",
-    value: Math.sqrt(3) * data.current * data.voltage * data.powerfactor
+    stateID: "power",
+    value: (Math.sqrt(3) * data.current * data.voltage * data.powerfactor).toFixed(2)
   }; 
 }
 
 const calculate1PhasePower = (data) => {
   return {
-    id: "power",
-    value: data.current * data.voltage * data.powerfactor
+    stateID: "power",
+    value: (data.current * data.voltage * data.powerfactor).toFixed(2)
   };
 }
 
 const calculate3PhaseCurrent = (data) => {
   return {
-    id: "current",
-    value: data.power / (Math.sqrt(3) * data.voltage * data.powerfactor)
+    stateID: "current",
+    value: (data.power / (Math.sqrt(3) * data.voltage * data.powerfactor)).toFixed(2)
   }
 }
 
 const calculate1PhaseCurrent = (data) => {
   return {
-    id: "current",
-    value: data.power / ( data.voltage * data.powerfactor)
+    stateID: "current",
+    value: (data.power / ( data.voltage * data.powerfactor)).toFixed(2)
   }
 }
 
 const calculate3PhaseVoltage = (data) => {
   return {
-    id: "voltage",
-    value: data.power / ( data.current * data.powerfactor * Math.sqrt(3) )
+    stateID: "voltage",
+    value: (data.power / ( data.current * data.powerfactor * Math.sqrt(3) )).toFixed(2)
   }
 } 
 
 const calculate1PhaseVoltage = (data) => {
   return {
-    id: "voltage",
-    value: data.power / ( data.current * data.powerfactor )
+    stateID: "voltage",
+    value: (data.power / ( data.current * data.powerfactor )).toFixed(2)
   }
 } 
 

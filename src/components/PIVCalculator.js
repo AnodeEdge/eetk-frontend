@@ -21,35 +21,29 @@ function PIVCalculator(props) {
 
   const fieldInputDefaults = [
     {
-      id: "voltage",
+      stateID: "voltage",
       inputDescription: "Voltage: ",
       unit: " V",
       defaultValue: state.voltage,
     },
     {
-      id: "current",
+      stateID: "current",
       inputDescription: "Current: ",
       unit: " A",
       defaultValue: state.current,
     },
     {
-      id: "power",
+      stateID: "power",
       inputDescription: "Power: ",
       unit: " W",
       defaultValue: state.power,
-    },
-    {
-      id: "powerfactor",
-      inputDescription: "PF: ",
-      unit: "",
-      defaultValue: state.powerfactor,
     },
   ];
 
   const setStateValues = (data) => {
     setState({
       ...state,
-      [data.id]: data.value,
+      [data.stateID]: data.value,
     });
   };
 
@@ -133,6 +127,11 @@ function PIVCalculator(props) {
   };
   return (
     <div style={componentStyle}>
+      <div style={{ textAlign: "center", margin: "0 0 1% 0" }}>
+        <label style={{ fontSize: "x-large" }}>
+          Power / Current / Voltage Calculator
+        </label>
+      </div>
       <form onSubmit={handleSubmit} style={formStyle}>
         <div
           style={{
@@ -142,7 +141,7 @@ function PIVCalculator(props) {
           }}
         >
           <SelectButton
-            id="calctype"
+            stateID="calctype"
             inputDescription="Power"
             value="power"
             // default={data.default}
@@ -150,7 +149,7 @@ function PIVCalculator(props) {
             style={buttonStyle}
           />
           <SelectButton
-            id="calctype"
+            stateID="calctype"
             inputDescription="Current"
             value="current"
             // default={data.default}
@@ -158,7 +157,7 @@ function PIVCalculator(props) {
             style={buttonStyle}
           />
           <SelectButton
-            id="calctype"
+            stateID="calctype"
             inputDescription="Voltage"
             value="voltage"
             // default={data.default}
@@ -175,35 +174,46 @@ function PIVCalculator(props) {
           }}
         >
           <SelectButton
-            id={"phase"}
+            stateID={"phase"}
             inputDescription={"Single"}
             value={"single"}
             callback={setStateValues}
             style={buttonStyle}
           />
           <SelectButton
-            id={"phase"}
+            stateID={"phase"}
             inputDescription={"Three"}
             value={"three"}
             callback={setStateValues}
             style={buttonStyle}
           />
         </div>
+        <div style={{ margin: "0 0 2% 0" }}>
+          <InputValueField
+            stateID="powerfactor"
+            inputDescription="Power Factor: "
+            unit=""
+            defaultValue={state.powerfactor}
+            callback={setStateValues}
+            headerStyle={headerStyle}
+            componentStyle={{ width: "50%" }}
+          />
+        </div>
         <div
           style={{
             display: "flex",
-            margin: "0 0 1% 0",
+            margin: "0 0 2% 0",
             flexDirection: "row",
             flexWrap: "wrap",
             justifyContent: "space-between",
           }}
         >
           {fieldInputDefaults.map((data) => {
-            if (state.calctype !== data.id) {
+            if (state.calctype !== data.stateID) {
               return (
                 <>
                   <InputValueField
-                    id={data.id}
+                    stateID={data.stateID}
                     inputDescription={data.inputDescription}
                     unit={data.unit}
                     defaultValue={data.defaultValue}

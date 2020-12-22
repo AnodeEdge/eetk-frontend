@@ -16,6 +16,12 @@ function Calculations(props) {
         "Calculator for converting between power, current, or voltage in AC systems including power factor, single phase, and three phase.",
       to: "/calculations/piv",
     },
+    {
+      title: "Voltage Drop",
+      description:
+        "Determine voltage drop due to conductor size, length, material, and conduit material using NEC Chapter 9 Table 9",
+      to: "/calculations/voltagedrop",
+    },
   ];
 
   return (
@@ -32,4 +38,3 @@ function Calculations(props) {
 }
 
 export default Calculations;
-

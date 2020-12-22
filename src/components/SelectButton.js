@@ -5,7 +5,7 @@ function SelectButton(props) {
     evt.preventDefault();
     props.callback(
       {
-      id: props.id,
+      stateID: props.stateID,
       value: evt.target.value
       })
     }

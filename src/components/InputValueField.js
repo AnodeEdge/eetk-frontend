@@ -5,9 +5,8 @@ function InputValueField(props) {
 
   const handleChange = (evt) => {
     setValue(evt.target.value);
-    props.callback(
-    {
-      id: props.id,
+    props.callback({
+      stateID: props.stateID,
       value: evt.target.value,
     });
   };
@@ -18,11 +17,11 @@ function InputValueField(props) {
       <div>
         <input
           type="text"
-          id={props.id}
+          stateID={props.stateID}
           value={inputValue}
           onChange={handleChange}
         />
-      {props.unit}
+        {props.unit}
       </div>
     </div>
   );
