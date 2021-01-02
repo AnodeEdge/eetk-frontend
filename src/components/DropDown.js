@@ -15,7 +15,7 @@ function DropDown(props) {
     <div>
       <label style={props.headerStyle}>{props.inputDescription}</label>
       <div>
-        <select value={inputValue} onChange={handleChange}>
+        <select id={props.stateID} value={inputValue} onChange={handleChange}>
           {props.options.map((data) => {
             return <option value={data}>{data}</option>;
           })}

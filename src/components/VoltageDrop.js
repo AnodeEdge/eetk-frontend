@@ -12,6 +12,7 @@ function VoltageDrop(props) {
     lengthUnit: "feet",
     powerfactor: 1,
     phase: "three",
+    size: "12",
     conductorMaterial: "CU",
     conduitMaterial: "STEEL",
     result: "",
@@ -51,12 +52,14 @@ function VoltageDrop(props) {
 
   const getResult = async () => {
     const requestOptions = {
-      method: "GET",
-      headers: {},
-      // body: JSON.stringify(state),
-      body: {},
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(state),
     };
-    const response = await fetch("", requestOptions);
+    const response = await fetch(
+      "http://127.0.0.1:5000/api/calculate_voltage_drop",
+      requestOptions
+    );
     const data = await response.json();
     console.log(data);
     return data;
@@ -167,6 +170,13 @@ function VoltageDrop(props) {
             justifyContent: "space-between",
           }}
         >
+          <DropDown
+            stateID={"size"}
+            headerStyle={headerStyle}
+            inputDescription={"Conductor Size"}
+            options={[1, 2, 3]}
+            callback={setStateValues}
+          ></DropDown>
           <DropDown
             stateID={"conductorMaterial"}
             headerStyle={headerStyle}
