@@ -1,34 +1,80 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DropDown from "./DropDown";
 import InputValueField from "./InputValueField";
 import SelectButton from "./SelectButton";
 
-function VoltageDrop(props) {
-  const [state, setState] = React.useState({
-    calctype: "voltagedrop",
-    current: 100,
-    voltage: 480,
-    length: 0,
-    lengthUnit: "feet",
-    powerfactor: 1,
-    phase: "three",
-    size: "12",
-    conductorMaterial: "CU",
-    conduitMaterial: "STEEL",
-    result: "",
-  });
+const inputDefaults = {
+  sizes: ["Loading..."],
+  conduitMaterials: ["Loading..."],
+  conductorMaterials: ["Loading..."],
+};
 
-  useEffect(() => {
-    return () => {
-      props.setShowTiles(true);
-    };
-  }, []);
+const stateDefaults = {
+  calctype: "voltagedrop",
+  current: 100,
+  voltage: 480,
+  length: 100,
+  lengthUnit: "feet",
+  powerfactor: 1,
+  phase: "three",
+  size: "14",
+  conductorMaterial: "CU",
+  conduitMaterial: "PVC",
+  parallelSets: 1,
+  result: "",
+};
+
+// const outputDefaults = {};
+
+function VoltageDrop(props) {
+  const [state, setState] = useState(stateDefaults);
+
+  // const [outputs, setOutputs] = useState(outputDefaults);
+
+  const [inputs, setInputs] = useState(inputDefaults);
 
   const setStateValues = (data) => {
     setState({
       ...state,
       [data.stateID]: data.value,
     });
+  };
+
+  useEffect(() => {
+    handleFetchInputData(
+      "http://127.0.0.1:5000/voltage_drop/inputs",
+      "POST",
+      setInputs
+    );
+
+    return () => {
+      props.setShowTiles(true);
+    };
+  }, []);
+
+  const fetchData = async (url, method) => {
+    const requestOptions = {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(state),
+    };
+    const response = await fetch(url, requestOptions);
+    const data = await response.json();
+    return data;
+  };
+
+  const handleFetchInputData = async (url, method, Func) => {
+    const recieved = await fetchData(url, method);
+    Func(recieved);
+  };
+
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
+    const results = await fetchData(
+      "http://127.0.0.1:5000/voltage_drop/calc",
+      "POST"
+    );
+    console.log(results);
   };
 
   const componentStyle = {
@@ -50,26 +96,6 @@ function VoltageDrop(props) {
 
   const buttonStyle = {};
 
-  const getResult = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(state),
-    };
-    const response = await fetch(
-      "http://127.0.0.1:5000/api/calculate_voltage_drop",
-      requestOptions
-    );
-    const data = await response.json();
-    console.log(data);
-    return data;
-  };
-
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    getResult();
-  };
-
   return (
     <div style={componentStyle}>
       <div style={{ textAlign: "center", margin: "0 0 1% 0" }}>
@@ -85,16 +111,16 @@ function VoltageDrop(props) {
           }}
         >
           <SelectButton
-            stateID={"phase"}
-            inputDescription={"Three"}
-            value={"three"}
+            stateID="phase"
+            inputDescription="Three"
+            value="three"
             callback={setStateValues}
             style={buttonStyle}
           />
           <SelectButton
-            stateID={"phase"}
-            inputDescription={"Single"}
-            value={"single"}
+            stateID="phase"
+            inputDescription="Single"
+            value="single"
             callback={setStateValues}
             style={buttonStyle}
           />
@@ -109,28 +135,28 @@ function VoltageDrop(props) {
           }}
         >
           <InputValueField
-            stateID={"current"}
-            inputDescription={"Load Current"}
-            unit={" A"}
-            defaultValue={0}
+            stateID="current"
+            inputDescription="Load Current"
+            unit=" A"
+            defaultValue={state.current}
             callback={setStateValues}
             headerStyle={headerStyle}
             componentStyle={{ width: "50%" }}
           ></InputValueField>
           <InputValueField
-            stateID={"powerfactor"}
-            inputDescription={"Power Factor"}
-            unit={""}
-            defaultValue={0}
+            stateID="powerfactor"
+            inputDescription="Power Factor"
+            unit=""
+            defaultValue={state.powerfactor}
             callback={setStateValues}
             headerStyle={headerStyle}
             componentStyle={{ width: "50%" }}
           ></InputValueField>
           <InputValueField
-            stateID={"voltage"}
-            inputDescription={"Voltage"}
-            unit={" V"}
-            defaultValue={480}
+            stateID="voltage"
+            inputDescription="Voltage"
+            unit=" V"
+            defaultValue={state.voltage}
             callback={setStateValues}
             headerStyle={headerStyle}
             componentStyle={{ width: "50%" }}
@@ -145,18 +171,18 @@ function VoltageDrop(props) {
           }}
         >
           <InputValueField
-            stateID={"length"}
-            inputDescription={"Length"}
-            unit={""}
+            stateID="length"
+            inputDescription="Length"
+            unit=""
             defaultValue={0}
             callback={setStateValues}
             headerStyle={headerStyle}
             componentStyle={{ width: "50%" }}
           ></InputValueField>
           <DropDown
-            stateID={"lengthUnit"}
+            stateID="lengthUnit"
             headerStyle={headerStyle}
-            inputDescription={"Length Units"}
+            inputDescription="Length Units"
             options={["feet", "meters"]}
             callback={setStateValues}
           ></DropDown>
@@ -171,26 +197,37 @@ function VoltageDrop(props) {
           }}
         >
           <DropDown
-            stateID={"size"}
+            stateID="size"
             headerStyle={headerStyle}
-            inputDescription={"Conductor Size"}
-            options={[1, 2, 3]}
+            inputDescription="Conductor Size"
+            options={inputs.sizes}
             callback={setStateValues}
           ></DropDown>
           <DropDown
-            stateID={"conductorMaterial"}
+            stateID="conductorMaterial"
             headerStyle={headerStyle}
-            inputDescription={"Conductor Material"}
-            options={["CU", "AL"]}
+            inputDescription="Conductor Material"
+            options={inputs.conductorMaterials}
             callback={setStateValues}
           ></DropDown>
           <DropDown
-            stateID={"conduitMaterial"}
+            stateID="conduitMaterial"
             headerStyle={headerStyle}
-            inputDescription={"Conduit Material"}
-            options={["STEEL", "PVC", "AL"]}
+            inputDescription="Conduit Material"
+            options={inputs.conduitMaterials}
             callback={setStateValues}
           ></DropDown>
+        </div>
+        <div>
+          <InputValueField
+            stateID="parallelSets"
+            inputDescription="Parallel Sets"
+            unit=" Sets"
+            defaultValue={1}
+            callback={setStateValues}
+            headerStyle={headerStyle}
+            componentStyle={{ width: "50%" }}
+          ></InputValueField>
         </div>
         <button>Submit</button>
       </form>
@@ -209,6 +246,9 @@ function VoltageDrop(props) {
       {state.conductorMaterial}
       <br></br>
       {state.conduitMaterial}
+      <br></br>
+      {state.parallelSets}
+      
     </div>
   );
 }
