@@ -22,6 +22,11 @@ function Calculations(props) {
         "Determine voltage drop due to conductor size, length, material, and conduit material using NEC Chapter 9 Table 9",
       to: "/calculations/voltagedrop",
     },
+    {
+      title: "Conduit Fill",
+      description: "Calculate conduit fill percentage and jam ratio using NEC Chapter 9 Table 5 and Table 5",
+      to: "/calculations/conduitfill"
+    }
   ];
 
   return (

@@ -1,24 +1,34 @@
 import React from "react";
-
+import { headerStyle } from "./VoltageDrop";
 function InputValueField(props) {
-  const [inputValue, setValue] = React.useState(props.defaultValue);
+  // const [inputValue, setValue] = React.useState(props.defaultValue);
 
   const handleChange = (evt) => {
-    setValue(evt.target.value);
-    props.callback({
-      stateID: props.stateID,
-      value: evt.target.value,
-    });
+    // setValue(evt.target.value);
+    if (props.setStateValues !== undefined) {
+      props.setStateValues({
+        stateID: props.stateID,
+        value: evt.target.value,
+      });
+    } else if (props.setState !== undefined) {
+      props.setState(evt.target.value);
+    }
   };
 
   return (
     <div style={props.componentStyle}>
-      <label style={props.headerStyle}>{props.inputDescription}</label>
+      <label style={{ ...headerStyle, ...props.style }}>
+        {props.inputDescription}
+      </label>
       <div>
+        {props.errorMessage != null && (
+          <text style={{ color: "red" }}>{props.errorMessage}</text>
+        )}
         <input
-          type="text"
+          type={props.type}
           stateID={props.stateID}
-          value={inputValue}
+          // value={inputValue}
+          value={props.value}
           onChange={handleChange}
         />
         {props.unit}

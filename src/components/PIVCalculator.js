@@ -1,7 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import InputValueField from "./InputValueField";
 import PIV from "../helpers/PIV";
 import SelectButton from "./SelectButton";
+
+const defaultErrors = {
+  current: null,
+  voltage: null,
+  power: null,
+  powerfactor: null,
+}
 
 function PIVCalculator(props) {
   useEffect(() => {
@@ -10,7 +17,7 @@ function PIVCalculator(props) {
     };
   }, []);
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     calctype: "power",
     current: 100,
     voltage: 480,
@@ -19,24 +26,29 @@ function PIVCalculator(props) {
     phase: "three",
   });
 
+  const [errors, setError] = useState(defaultErrors);
+
   const fieldInputDefaults = [
     {
       stateID: "voltage",
       inputDescription: "Voltage: ",
       unit: " V",
-      defaultValue: state.voltage,
+      value: state.voltage,
+      type: "number",
     },
     {
       stateID: "current",
       inputDescription: "Current: ",
       unit: " A",
-      defaultValue: state.current,
+      value: state.current,
+      type: "number",
     },
     {
       stateID: "power",
       inputDescription: "Power: ",
       unit: " W",
-      defaultValue: state.power,
+      value: state.power,
+      type: "number",
     },
   ];
 
@@ -47,36 +59,11 @@ function PIVCalculator(props) {
     });
   };
 
-  const checkInputs = () => {
-    if (state.powerfactor <= 0 || state.powerfactor > 1) {
-      alert("Power Factor must be between 0 and 1");
-      return;
-    }
-  };
-
-  const selectCalculation = () => {
-    if (state.phase === "three") {
-      if (state.calctype === "voltage") {
-        setStateValues(PIV.voltage3Phase(state));
-      } else if (state.calctype === "current") {
-        setStateValues(PIV.current3Phase(state));
-      } else {
-        setStateValues(PIV.power3Phase(state));
-      }
-    } else {
-      if (state.calctype === "voltage") {
-        setStateValues(PIV.voltage1Phase(state));
-      } else if (state.calctype === "current") {
-        setStateValues(PIV.current1Phase(state));
-      } else {
-        setStateValues(PIV.power1Phase(state));
-      }
-    }
-  };
-
   const performCalculation = () => {
-    checkInputs();
-    selectCalculation();
+    if (PIV.dataValidation(setError, state, errors)) {
+      PIV.selectCalculation(setStateValues, state);
+    } else {
+    }
   };
 
   const handleSubmit = (evt) => {
@@ -88,11 +75,9 @@ function PIVCalculator(props) {
     let unit = "W";
     if (state.calctype === "power") {
       unit = "W";
-    }
-    if (state.calctype === "voltage") {
+    } else if (state.calctype === "voltage") {
       unit = "V";
-    }
-    if (state.calctype === "current") {
+    } else if (state.calctype === "current") {
       unit = "A";
     }
     return state[state.calctype] + " " + unit;
@@ -193,10 +178,12 @@ function PIVCalculator(props) {
             stateID="powerfactor"
             inputDescription="Power Factor: "
             unit=""
-            defaultValue={state.powerfactor}
-            callback={setStateValues}
+            setStateValues={setStateValues}
             headerStyle={headerStyle}
             componentStyle={{ width: "50%" }}
+            value={state.powerfactor}
+            type={null}
+            errorMessage={errors.powerfactor}
           />
         </div>
         <div
@@ -213,13 +200,15 @@ function PIVCalculator(props) {
               return (
                 <>
                   <InputValueField
+                    type={data.type}
                     stateID={data.stateID}
                     inputDescription={data.inputDescription}
                     unit={data.unit}
-                    defaultValue={data.defaultValue}
-                    callback={setStateValues}
+                    value={data.value}
+                    setStateValues={setStateValues}
                     headerStyle={headerStyle}
                     componentStyle={{ width: "50%" }}
+                    errorMessage={errors[data.stateID]}
                   ></InputValueField>
                 </>
               );

@@ -4,9 +4,9 @@ import InputValueField from "./InputValueField";
 import SelectButton from "./SelectButton";
 
 const inputDefaults = {
-  sizes: ["Loading..."],
-  conduitMaterials: ["Loading..."],
-  conductorMaterials: ["Loading..."],
+  sizes: [],
+  conduitMaterials: [],
+  conductorMaterials: [],
 };
 
 const stateDefaults = {
@@ -21,19 +21,41 @@ const stateDefaults = {
   conductorMaterial: "CU",
   conduitMaterial: "PVC",
   parallelSets: 1,
-  result: "",
 };
 
-// const outputDefaults = {};
+const defaultErrors = {
+  length: null,
+  current: null,
+  voltage: null,
+  powerfactor: null,
+  parallelSets: null,
+}
+
+const componentStyle = {
+  margin: "25px 0",
+};
+
+const formStyle = {
+  margin: "0 30% auto",
+  padding: "25px",
+  backgroundColor: "#c3e2e6",
+  display: "flex",
+  flexDirection: "column",
+};
+
+export const headerStyle = {
+  fontSize: "large",
+};
 
 function VoltageDrop(props) {
   const [state, setState] = useState(stateDefaults);
-
-  // const [outputs, setOutputs] = useState(outputDefaults);
-
   const [inputs, setInputs] = useState(inputDefaults);
+  const [output, setOutputs] = useState({});
+  const [errors, setErrors] = useState(defaultErrors)
 
   const setStateValues = (data) => {
+    console.log(data);
+
     setState({
       ...state,
       [data.stateID]: data.value,
@@ -41,15 +63,17 @@ function VoltageDrop(props) {
   };
 
   useEffect(() => {
+    return () => {
+      props.setShowTiles(true);
+    };
+  }, []);
+
+  useEffect(() => {
     handleFetchInputData(
       "http://127.0.0.1:5000/voltage_drop/inputs",
       "POST",
       setInputs
     );
-
-    return () => {
-      props.setShowTiles(true);
-    };
   }, []);
 
   const fetchData = async (url, method) => {
@@ -74,27 +98,9 @@ function VoltageDrop(props) {
       "http://127.0.0.1:5000/voltage_drop/calc",
       "POST"
     );
-    console.log(results);
-  };
 
-  const componentStyle = {
-    margin: "25px 0",
+    setOutputs(results);
   };
-
-  const formStyle = {
-    margin: "0 30% auto",
-    padding: "25px",
-    backgroundColor: "#c3e2e6",
-    borderRadius: "10px",
-    display: "flex",
-    flexDirection: "column",
-  };
-
-  const headerStyle = {
-    fontSize: "large",
-  };
-
-  const buttonStyle = {};
 
   return (
     <div style={componentStyle}>
@@ -115,14 +121,12 @@ function VoltageDrop(props) {
             inputDescription="Three"
             value="three"
             callback={setStateValues}
-            style={buttonStyle}
           />
           <SelectButton
             stateID="phase"
             inputDescription="Single"
             value="single"
             callback={setStateValues}
-            style={buttonStyle}
           />
         </div>
         <div
@@ -138,29 +142,25 @@ function VoltageDrop(props) {
             stateID="current"
             inputDescription="Load Current"
             unit=" A"
-            defaultValue={state.current}
-            callback={setStateValues}
-            headerStyle={headerStyle}
+            setStateValues={setStateValues}
             componentStyle={{ width: "50%" }}
-          ></InputValueField>
+            value={state.current}
+          />
           <InputValueField
             stateID="powerfactor"
             inputDescription="Power Factor"
-            unit=""
-            defaultValue={state.powerfactor}
-            callback={setStateValues}
-            headerStyle={headerStyle}
+            setStateValues={setStateValues}
             componentStyle={{ width: "50%" }}
-          ></InputValueField>
+            value={state.powerfactor}
+          />
           <InputValueField
             stateID="voltage"
             inputDescription="Voltage"
             unit=" V"
-            defaultValue={state.voltage}
-            callback={setStateValues}
-            headerStyle={headerStyle}
+            setStateValues={setStateValues}
             componentStyle={{ width: "50%" }}
-          ></InputValueField>
+            value={state.voltage}
+          />
         </div>
         <div
           style={{
@@ -173,19 +173,17 @@ function VoltageDrop(props) {
           <InputValueField
             stateID="length"
             inputDescription="Length"
-            unit=""
-            defaultValue={0}
             callback={setStateValues}
-            headerStyle={headerStyle}
             componentStyle={{ width: "50%" }}
-          ></InputValueField>
+            value={state.length}
+          />
           <DropDown
             stateID="lengthUnit"
-            headerStyle={headerStyle}
             inputDescription="Length Units"
             options={["feet", "meters"]}
             callback={setStateValues}
-          ></DropDown>
+            value={state.lengthUnit}
+          />
         </div>
         <div
           style={{
@@ -198,59 +196,49 @@ function VoltageDrop(props) {
         >
           <DropDown
             stateID="size"
-            headerStyle={headerStyle}
             inputDescription="Conductor Size"
             options={inputs.sizes}
             callback={setStateValues}
-          ></DropDown>
+            value={state.size}
+          />
           <DropDown
             stateID="conductorMaterial"
-            headerStyle={headerStyle}
             inputDescription="Conductor Material"
             options={inputs.conductorMaterials}
             callback={setStateValues}
-          ></DropDown>
+            value={state.conductorMaterial}
+          />
           <DropDown
             stateID="conduitMaterial"
-            headerStyle={headerStyle}
             inputDescription="Conduit Material"
             options={inputs.conduitMaterials}
             callback={setStateValues}
-          ></DropDown>
+            value={state.conduitMaterial}
+          />
         </div>
         <div>
           <InputValueField
             stateID="parallelSets"
             inputDescription="Parallel Sets"
             unit=" Sets"
-            defaultValue={1}
             callback={setStateValues}
-            headerStyle={headerStyle}
             componentStyle={{ width: "50%" }}
-          ></InputValueField>
+            value={state.parallelSets}
+          />
         </div>
         <button>Submit</button>
       </form>
-      {state.phase}
-      <br></br>
-      {state.current}
-      <br></br>
-      {state.powerfactor}
-      <br></br>
-      {state.voltage}
-      <br></br>
-      {state.length}
-      <br></br>
-      {state.lengthUnit}
-      <br></br>
-      {state.conductorMaterial}
-      <br></br>
-      {state.conduitMaterial}
-      <br></br>
-      {state.parallelSets}
-      
+      <div style={{ ...formStyle }}>
+        {output && output.result !== 0 && (
+          <>
+            <label>Results: </label>
+            <h6>{output.result} </h6>
+            <h6>{output.percent}</h6>
+          </>
+        )}
+      </div>
     </div>
-  );
+  );                                                                                                                                                                                
 }
 
 export default VoltageDrop;
