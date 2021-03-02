@@ -62,7 +62,6 @@ function PIVCalculator(props) {
   const performCalculation = () => {
     if (PIV.dataValidation(setError, state, errors)) {
       PIV.selectCalculation(setStateValues, state);
-    } else {
     }
   };
 

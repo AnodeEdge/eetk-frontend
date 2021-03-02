@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import DropDown from "./DropDown";
 import InputValueField from "./InputValueField";
 import SelectButton from "./SelectButton";
+import VD from "../helpers/VD";
 
 const inputDefaults = {
   sizes: [],
@@ -29,7 +30,7 @@ const defaultErrors = {
   voltage: null,
   powerfactor: null,
   parallelSets: null,
-}
+};
 
 const componentStyle = {
   margin: "25px 0",
@@ -51,7 +52,7 @@ function VoltageDrop(props) {
   const [state, setState] = useState(stateDefaults);
   const [inputs, setInputs] = useState(inputDefaults);
   const [output, setOutputs] = useState({});
-  const [errors, setErrors] = useState(defaultErrors)
+  const [errors, setErrors] = useState(defaultErrors);
 
   const setStateValues = (data) => {
     console.log(data);
@@ -94,12 +95,28 @@ function VoltageDrop(props) {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    const results = await fetchData(
-      "http://127.0.0.1:5000/voltage_drop/calc",
-      "POST"
-    );
+    if (VD.dataValidation(setErrors, state, errors)) {
+      const results = await fetchData(
+        "http://127.0.0.1:5000/voltage_drop/calc",
+        "POST"
+      );
+      setOutputs(results);
+    }
+  };
 
-    setOutputs(results);
+  const handleResult = () => {
+    console.log(output.result)
+    if (output && output.result !== 0) {
+      return (
+        <>
+          <label>Results: </label>
+          <h6>{output.result} </h6>
+          <h6>{output.percent}</h6>
+        </>
+      );
+    } else if (output.result === 0) {
+      return <label>Data is unavailable for the selected parameters</label>;
+    }
   };
 
   return (
@@ -145,6 +162,7 @@ function VoltageDrop(props) {
             setStateValues={setStateValues}
             componentStyle={{ width: "50%" }}
             value={state.current}
+            errorMessage={errors.current}
           />
           <InputValueField
             stateID="powerfactor"
@@ -152,6 +170,7 @@ function VoltageDrop(props) {
             setStateValues={setStateValues}
             componentStyle={{ width: "50%" }}
             value={state.powerfactor}
+            errorMessage={errors.powerfactor}
           />
           <InputValueField
             stateID="voltage"
@@ -160,6 +179,7 @@ function VoltageDrop(props) {
             setStateValues={setStateValues}
             componentStyle={{ width: "50%" }}
             value={state.voltage}
+            errorMessage={errors.voltage}
           />
         </div>
         <div
@@ -173,9 +193,10 @@ function VoltageDrop(props) {
           <InputValueField
             stateID="length"
             inputDescription="Length"
-            callback={setStateValues}
+            setStateValues={setStateValues}
             componentStyle={{ width: "50%" }}
             value={state.length}
+            errorMessage={errors.length}
           />
           <DropDown
             stateID="lengthUnit"
@@ -221,24 +242,19 @@ function VoltageDrop(props) {
             stateID="parallelSets"
             inputDescription="Parallel Sets"
             unit=" Sets"
-            callback={setStateValues}
+            setStateValues={setStateValues}
             componentStyle={{ width: "50%" }}
             value={state.parallelSets}
+            errorMessage={errors.parallelSets}
           />
         </div>
         <button>Submit</button>
       </form>
       <div style={{ ...formStyle }}>
-        {output && output.result !== 0 && (
-          <>
-            <label>Results: </label>
-            <h6>{output.result} </h6>
-            <h6>{output.percent}</h6>
-          </>
-        )}
+        {handleResult()}
       </div>
     </div>
-  );                                                                                                                                                                                
+  );
 }
 
 export default VoltageDrop;

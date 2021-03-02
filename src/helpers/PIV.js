@@ -42,6 +42,7 @@ const calculate1PhaseVoltage = (data) => {
 
 const dataValidation = (setError, state, errors) => {
   var errorFlag = false
+  // Power Factor Validation
   if (!(state.powerfactor >= 0) || !(state.powerfactor <= 1)) {
     errorFlag = true
     setError((data) => ({
@@ -51,6 +52,7 @@ const dataValidation = (setError, state, errors) => {
   } else if (errors.powerfactor !== null) {
     setError((data) => ({ ...data, powerfactor: null }));
   }
+  // Voltage Validation
   if (
     (state.voltage < 0 || state.voltage === undefined) &&
     state.calctype !== "voltage"
@@ -63,8 +65,9 @@ const dataValidation = (setError, state, errors) => {
   } else if (errors.voltage !== null) {
     setError((data) => ({ ...data, voltage: null }));
   }
+  // Current Validation
   if (
-    (state.current < 0 || state.voltage === undefined) &&
+    (state.current < 0 || state.current === undefined) &&
     state.calctype !== "current"
   ) {
     errorFlag = true
@@ -75,6 +78,7 @@ const dataValidation = (setError, state, errors) => {
   } else if (errors.current != null) {
     setError((data) => ({ ...data, current: null }));
   }
+  // Power Validation
   if (
     (state.power < 0 || state.power === undefined) &&
     state.calctype !== "power"
