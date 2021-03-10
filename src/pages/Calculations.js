@@ -26,8 +26,7 @@ function Calculations(props) {
     {
       title: "Conduit Fill and Jam Ratio",
       subtitle: "NEC Chapter 9 Table 4 & 5",
-      description:
-        "Calculate conduit fill percentage and jam ratio.",
+      description: "Calculate conduit fill percentage and jam ratio.",
       to: "/calculations/conduitfill",
     },
   ];
