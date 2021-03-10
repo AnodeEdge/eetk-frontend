@@ -30,6 +30,7 @@ function InputValueField(props) {
           // value={inputValue}
           value={props.value}
           onChange={handleChange}
+          min={props.min}
         />
         {props.unit}
       </div>

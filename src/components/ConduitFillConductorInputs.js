@@ -44,6 +44,8 @@ function ConduitFillConductorInputs(props) {
         setStateValues={setStateValues}
         stateID="quantity"
         value={props.data.quantity}
+        type="number"
+        min={1}
       />
       {!props.hideRemove && (
         <RemoveInputButton

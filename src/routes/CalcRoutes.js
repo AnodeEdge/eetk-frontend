@@ -7,7 +7,7 @@ import PIVCalculator from '../components/PIVCalculator';
 import VoltageDrop from '../components/VoltageDrop';
 
 
-function CalcRoute(props) {
+function CalcRoutes(props) {
   return(
     <Switch>
       <Route path='/calculations/piv' component={() => <PIVCalculator setShowTiles={props.setShowTiles} />} />
@@ -17,4 +17,4 @@ function CalcRoute(props) {
   )
 }
 
-export default CalcRoute;
+export default CalcRoutes;

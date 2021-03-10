@@ -14,6 +14,8 @@ const conduitDataDefaults = {
   conduitSize: "3/8",
 };
 
+const errorDefaults = {}
+
 const inputOptionsDefaults = {
   conduitTypes: [],
   tradeSizes: [],
@@ -34,6 +36,7 @@ function ConduitFill(props) {
   const [conduitData, setConduitData] = useState(conduitDataDefaults);
   const [inputOptions, setInputOptions] = useState(inputOptionsDefaults);
   const [outputs, setOutputs] = useState({});
+  const [errors, setErrors] = useState(errorDefaults)
 
   useEffect(() => {
     return () => {

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../css/TileGrid.css";
+// import "../css/TileGrid.css";
+
 
 function Tile(props) {
   const handleClick = (evt) => {
@@ -8,12 +9,13 @@ function Tile(props) {
   };
 
   return (
-    <div className="card w3-card w3-hover-shadow" onClick={handleClick}>
-      <Link to={props.to}>
-        <header className="w3-container">
-          <h6>{props.title}</h6>
+    <div className="card" style={{}} onClick={handleClick}>
+      <Link className="card-body" style={{color: "black"}}to={props.to}>
+        <header className="card-title">
+          <h4>{props.title}</h4>
+          <h5>{props.subtitle}</h5>
         </header>
-        <div className="w3-container">
+        <div className="card-text">
           <p>{props.description}</p>
         </div>
       </Link>
@@ -23,13 +25,14 @@ function Tile(props) {
 
 function TileGrid(props) {
   return (
-    <div className="tile-grid">
+    <div className="card-group w-50" style={{margin: "auto"}}>
       {props.TileData.map((data) => (
         <Tile 
         title={data.title} 
         description={data.description}
         to={data.to}
         handleSelection={props.handleSelection}
+        subtitle={data.subtitle}
         ></Tile>
       ))}
     </div>
