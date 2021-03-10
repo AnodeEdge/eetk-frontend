@@ -1,7 +1,7 @@
 // primary routes for the main navigation
 
 import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import References from "../pages/References";
 import Calculations from "../pages/Calculations";
 import Contact from "../pages/Contact";
@@ -12,6 +12,7 @@ function NavRoute() {
 
   return (
     <Switch>
+      <Route exact path="/">{<Redirect to="/calculations" />}</Route>
       <Route 
         path="/references" 
         render={() => (

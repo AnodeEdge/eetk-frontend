@@ -8,7 +8,6 @@ import EGCTable from '../components/EGCTable';
 function RefRoutes(props) {
   return(
     <Switch>
-      {/* <Route path='/calculations/piv' component={() => <PIVCalculator setShowTiles={props.setShowTiles} />} /> */}
       <Route path='/references/egc' component={() => <EGCTable setShowTiles={props.setShowTiles} />} />
     </Switch>   
   )

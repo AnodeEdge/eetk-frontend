@@ -1,50 +1,41 @@
 // primary navigation bar
-import React from 'react';
-import '../css/NavigationBar.css'
-import ListLink from '../components/ListLink'
+import React from "react";
+import "../css/NavigationBar.css";
+import { Nav, Navbar } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function NavigationBar() {
-  
-  const listStyle = {
-    fontSize: "large"
-  }
- 
-  // Modify Navigation Bar Links Here
-  const linkData = [
-    { reference: "/calculations", value: "Calculations" },
-    { reference: "/references", value: "References" },
-    { reference: "/about", value: "About" },
-    { reference: "/contact", value: "Contact" },
-  ]
-  
   return (
-    <div style={{background: "#333"}}>
-      <div>
-          <div className = "nav-container">
-            <div className = "nav-flex-item" style={{marginLeft: "10%"}}>
-              <img 
-              width="45 px" 
-              src="https://avatars3.githubusercontent.com/u/42901002?s=460&v=4"
-              alt="logo"
-              ></img>
-            </div>
-            <div className = "nav-flex-item">
-              <label className="title">Electrical Engineering Tool Box</label>
-            </div>
-            <ul className="nav-flex-ul">
-              {linkData.map( (data) => 
-                <ListLink 
-                reference={data.reference} 
-                value={data.value}
-                style={listStyle}
-                class= "nav-link">
-                </ListLink>
-              )}
-            </ul>
-        </div>
-      </div>
-    </div>
-  )
+    <Navbar fixed="top" bg="dark" variant="dark" style={{padding: "0 20%", height: "70px"}}>
+      <Navbar.Brand as={Link} to="/">
+        <img
+          src="https://avatars3.githubusercontent.com/u/42901002?s=460&v=4"
+          width="45"
+          style={{ margin: "0 10px" }}
+          alt="logo"
+        ></img>
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto">
+          <Nav.Link as={Link} to="/calculations">
+            Calculations
+          </Nav.Link>
+          <Nav.Link as={Link} to="/references">
+            References
+          </Nav.Link>
+          <Nav.Link as={Link} to="/about">
+            About
+          </Nav.Link>
+          <Nav.Link as={Link} to="/contact">
+            Contact
+          </Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+      <Navbar.Text>Electrical Engineering Tool Box</Navbar.Text>
+      <i class="fa fa-github"></i>
+    </Navbar>
+  );
 }
 
 export default NavigationBar;
