@@ -1,6 +1,6 @@
 import React from "react";
 import RefRoutes from "../routes/RefRoutes";
-import TileGrid from "../components/TileGrid";
+import { TileGrid } from "../components/TileGrid";
 
 function References(props) {
   const { setShowTiles, showTiles } = props;

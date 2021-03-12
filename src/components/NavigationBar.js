@@ -14,10 +14,11 @@ function NavigationBar() {
           style={{ margin: "0 10px" }}
           alt="logo"
         ></img>
+        <Navbar.Text>Electrical Engineering Tool Box</Navbar.Text>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto">
+        <Nav className="ml-auto">
           <Nav.Link as={Link} to="/calculations">
             Calculations
           </Nav.Link>
@@ -32,8 +33,6 @@ function NavigationBar() {
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>
-      <Navbar.Text>Electrical Engineering Tool Box</Navbar.Text>
-      <i class="fa fa-github"></i>
     </Navbar>
   );
 }

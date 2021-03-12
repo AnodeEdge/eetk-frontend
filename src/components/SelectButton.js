@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button} from 'react-bootstrap'
 
 function SelectButton(props) {
   const handleClick = (evt) => {
@@ -11,11 +12,7 @@ function SelectButton(props) {
     }
 
   return (
-    <button
-    style={props.style}
-    value={props.value}
-    onClick={handleClick}
-    >{props.inputDescription}</button>
+    <Button className="" size = 'lg' style={props.style} value={props.value} onClick={handleClick}>{props.inputDescription}</Button>
   )
 }
 

@@ -1,42 +1,38 @@
 import React from "react";
+import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// import "../css/TileGrid.css";
-
+import "../css/TileGrid.css";
 
 function Tile(props) {
   const handleClick = (evt) => {
-    props.handleSelection(true)
+    props.handleSelection(true);
   };
 
   return (
-    <div className="card" style={{}} onClick={handleClick}>
-      <Link className="card-body" style={{color: "black"}}to={props.to}>
-        <header className="card-title">
-          <h4>{props.title}</h4>
-          <h5>{props.subtitle}</h5>
-        </header>
-        <div className="card-text">
-          <p>{props.description}</p>
-        </div>
+    <Card className="tile" onClick={handleClick}>
+      <Link style={{ color: "black" }} to={props.to}>
+        <Card.Title>{props.title}</Card.Title>
+        <Card.Subtitle>{props.subtitle}</Card.Subtitle>
+        <Card.Text>{props.description}</Card.Text>
       </Link>
-    </div>
+    </Card>
   );
 }
 
 function TileGrid(props) {
   return (
-    <div className="card-group w-50" style={{margin: "auto"}}>
+    <div className="w-50" style={{margin: "0 auto", display: "grid", gridAutoRows: "1fr", gridTemplateColumns: "50% 50%"}}>
       {props.TileData.map((data) => (
-        <Tile 
-        title={data.title} 
-        description={data.description}
-        to={data.to}
-        handleSelection={props.handleSelection}
-        subtitle={data.subtitle}
+        <Tile
+          title={data.title}
+          description={data.description}
+          to={data.to}
+          handleSelection={props.handleSelection}
+          subtitle={data.subtitle}
         ></Tile>
       ))}
     </div>
   );
 }
 
-export default TileGrid;
+export { TileGrid, Tile };
