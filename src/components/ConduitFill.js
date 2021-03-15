@@ -99,6 +99,8 @@ function ConduitFill(props) {
     setConduitData((currVal) => ({ ...currVal, [data.stateID]: data.value }));
   };
 
+  const jamExists = () => (outputs.jam != '') 
+
   return (
     <div style={{ margin: "25px" }}>
       <div style={{ textAlign: "center", margin: "0 0 1% 0" }}>
@@ -150,7 +152,7 @@ function ConduitFill(props) {
       <div style={formStyle}>
         {Object.keys(outputs) != 0 && (<><h4>Results:</h4>
         <h4>{outputs.fill}</h4>
-        {outputs.jam != "" && <h4>{outputs.jam}</h4>}</>)}
+        {jamExists && <h4>{outputs.jam}</h4>}</>)}
       </div>
     </div>
   );

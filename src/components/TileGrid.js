@@ -21,7 +21,7 @@ function Tile(props) {
 
 function TileGrid(props) {
   return (
-    <div className="w-50" style={{margin: "0 auto", display: "grid", gridAutoRows: "1fr", gridTemplateColumns: "50% 50%"}}>
+    <div className="w-75" style={{margin: "0 auto", display: "grid", gridAutoRows: "1fr", gridTemplateColumns: "50% 50%"}}>
       {props.TileData.map((data) => (
         <Tile
           title={data.title}

@@ -1,10 +1,10 @@
 import React from "react";
+import { Form } from "react-bootstrap";
 import { headerStyle } from "./VoltageDrop";
 function InputValueField(props) {
   // const [inputValue, setValue] = React.useState(props.defaultValue);
 
   const handleChange = (evt) => {
-    // setValue(evt.target.value);
     if (props.setStateValues !== undefined) {
       props.setStateValues({
         stateID: props.stateID,
@@ -17,22 +17,23 @@ function InputValueField(props) {
 
   return (
     <div style={props.componentStyle}>
-      <label style={{ ...headerStyle, ...props.style }}>
+      <Form.Label className="font-weight-bold">
         {props.inputDescription}
-      </label>
+      </Form.Label>
       <div>
-        {props.errorMessage != null && (
-          <text style={{ color: "red" }}>{props.errorMessage}</text>
-        )}
-        <input
+        <Form.Control
           type={props.type}
           stateID={props.stateID}
-          // value={inputValue}
-          value={props.value}
+          placeholder={props.placeholder}
           onChange={handleChange}
           min={props.min}
-        />
-        {props.unit}
+          value={props.value}
+        ></Form.Control>
+        <div style={{ height: "2rem" }}>
+          {props.errorMessage != null && (
+            <text style={{ color: "red" }}>{props.errorMessage}</text>
+          )}
+        </div>
       </div>
     </div>
   );

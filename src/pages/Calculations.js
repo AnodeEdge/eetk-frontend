@@ -6,9 +6,9 @@ import { Fade } from "react-bootstrap";
 
 const calculatorTileData = [
   {
-    title: "Power / Current / Voltage Converter",
+    title: "Power, Current, and Voltage Conversion",
     description:
-      "Calculator to convert between power, voltage, and current in AC systems including power factor, single phase, and three phase formulation.",
+      "Calculator to convert between power, voltage, and current in AC systems including power factor, single phase, and three phase formulation using Ohm's Law",
     to: "/calculations/piv",
   },
   {

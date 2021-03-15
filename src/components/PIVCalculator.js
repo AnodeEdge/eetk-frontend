@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import InputValueField from "./InputValueField";
 import PIV from "../helpers/PIV";
 import SelectButton from "./SelectButton";
+import { Form, Button, Jumbotron, Container } from "react-bootstrap";
 
 const defaultErrors = {
   current: null,
   voltage: null,
   power: null,
   powerfactor: null,
-}
+};
 
 function PIVCalculator(props) {
   useEffect(() => {
@@ -19,38 +20,21 @@ function PIVCalculator(props) {
 
   const [state, setState] = useState({
     calctype: "power",
-    current: 100,
-    voltage: 480,
-    power: 0,
-    powerfactor: 1,
+    current: undefined,
+    voltage: undefined,
+    power: undefined,
+    powerfactor: undefined,
     phase: "three",
   });
 
-  const [errors, setError] = useState(defaultErrors);
+  useEffect(() => {
+    setState((currVal) => ({ ...currVal, ["powerfactor"]: "" }));
+    setState((currVal) => ({ ...currVal, ["current"]: "" }));
+    setState((currVal) => ({ ...currVal, ["voltage"]: "" }));
+    setState((currVal) => ({ ...currVal, ["power"]: "" }));
+  }, [state.calctype]);
 
-  const fieldInputDefaults = [
-    {
-      stateID: "voltage",
-      inputDescription: "Voltage: ",
-      unit: " V",
-      value: state.voltage,
-      type: "number",
-    },
-    {
-      stateID: "current",
-      inputDescription: "Current: ",
-      unit: " A",
-      value: state.current,
-      type: "number",
-    },
-    {
-      stateID: "power",
-      inputDescription: "Power: ",
-      unit: " W",
-      value: state.power,
-      type: "number",
-    },
-  ];
+  const [errors, setError] = useState(defaultErrors);
 
   const setStateValues = (data) => {
     setState({
@@ -82,144 +66,141 @@ function PIVCalculator(props) {
     return state[state.calctype] + " " + unit;
   };
 
-  const componentStyle = {
-    margin: "25px 0",
-  };
-
-  const formStyle = {
-    margin: "0 30% auto",
-    padding: "25px",
-    backgroundColor: "#c3e2e6",
-    borderRadius: "10px",
-    display: "flex",
-    flexDirection: "column",
-  };
-
-  const resultStyle = {
-    margin: "1% 30% auto",
-    padding: "25px",
-    backgroundColor: "#c3e2e6",
-    borderRadius: "10px",
-    display: "flex",
-    flexDirection: "row",
-  };
-
-  const buttonStyle = {};
-
-  const headerStyle = {
-    fontSize: "large",
-  };
   return (
-    <div style={componentStyle}>
-      <div style={{ textAlign: "center", margin: "0 0 1% 0" }}>
-        <label style={{ fontSize: "x-large" }}>
-          Power / Current / Voltage Calculator
-        </label>
-      </div>
-      <form onSubmit={handleSubmit} style={formStyle}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            margin: "0 0 1% 0",
-          }}
+    <div>
+      <Jumbotron className style={{ padding: "2rem 2rem" }} fluid>
+        <Container className="w-50">
+          <h2>Power, Current, and Voltage Conversion</h2>
+        </Container>
+      </Jumbotron>
+      <div
+        className="w-50"
+        style={{
+          margin: "0 auto",
+          display: "grid",
+          gridAutoRows: "1fr",
+          gridTemplateColumns: "50% 50%",
+        }}
+      >
+        <Form
+          className="border"
+          style={{ padding: "5%", margin: "0 2%" }}
+          onSubmit={handleSubmit}
         >
-          <SelectButton
-            stateID="calctype"
-            inputDescription="Power"
-            value="power"
-            // default={data.default}
-            callback={setStateValues}
-            style={buttonStyle}
-          />
-          <SelectButton
-            stateID="calctype"
-            inputDescription="Current"
-            value="current"
-            // default={data.default}
-            callback={setStateValues}
-            style={buttonStyle}
-          />
-          <SelectButton
-            stateID="calctype"
-            inputDescription="Voltage"
-            value="voltage"
-            // default={data.default}
-            callback={setStateValues}
-            style={buttonStyle}
-          />
+          <Form.Group>
+            <Form.Label className="font-weight-bold">Convert to</Form.Label>
+            <Form.Row
+              style={{ display: "grid", gridTemplateColumns: "33% 33% 33%" }}
+            >
+              <SelectButton
+                stateID="calctype"
+                inputDescription="Power"
+                value="power"
+                callback={setStateValues}
+                style={{ margin: "0 0.25rem 0 0" }}
+                selected={state.calctype}
+              />
+              <SelectButton
+                stateID="calctype"
+                inputDescription="Current"
+                value="current"
+                callback={setStateValues}
+                style={{ margin: "0 0.25rem 0 0" }}
+                selected={state.calctype}
+              />
+              <SelectButton
+                stateID="calctype"
+                inputDescription="Voltage"
+                value="voltage"
+                callback={setStateValues}
+                selected={state.calctype}
+              />
+            </Form.Row>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label className="font-weight-bold">Phase </Form.Label>
+            <Form.Row
+              style={{ display: "grid", gridTemplateColumns: "50% 50%" }}
+            >
+              <SelectButton
+                stateID={"phase"}
+                inputDescription={"Single"}
+                value={"single"}
+                callback={setStateValues}
+                style={{ margin: "0 0.25rem 0 0" }}
+                selected={state.phase}
+              />
+              <SelectButton
+                stateID={"phase"}
+                inputDescription={"Three"}
+                value={"three"}
+                callback={setStateValues}
+                selected={state.phase}
+              />
+            </Form.Row>
+          </Form.Group>
+          <Form.Group>
+            <InputValueField
+              stateID="powerfactor"
+              inputDescription="Power Factor "
+              unit=""
+              setStateValues={setStateValues}
+              value={state.powerfactor}
+              type={null}
+              errorMessage={errors.powerfactor}
+              placeholder="Enter Power Factor"
+            />
+          </Form.Group>
+          {state.calctype !== "voltage" && (
+            <Form.Group>
+              <InputValueField
+                type="number"
+                stateID="voltage"
+                inputDescription="Voltage (Volts)"
+                unit=" V"
+                value={state.voltage}
+                setStateValues={setStateValues}
+                errorMessage={errors["voltage"]}
+                placeholder="Enter Voltage"
+              ></InputValueField>
+            </Form.Group>
+          )}
+          {state.calctype !== "current" && (
+            <Form.Group>
+              <InputValueField
+                type="number"
+                stateID="current"
+                inputDescription="Current (Amperes)"
+                unit=" A"
+                value={state.current}
+                setStateValues={setStateValues}
+                errorMessage={errors["current"]}
+                placeholder="Enter Current"
+              ></InputValueField>
+            </Form.Group>
+          )}
+          {state.calctype !== "power" && (
+            <Form.Group>
+              <InputValueField
+                type="number"
+                stateID="power"
+                inputDescription="Power (Watts)"
+                unit=" W"
+                value={state.power}
+                setStateValues={setStateValues}
+                errorMessage={errors["power"]}
+                placeholder="Enter Power"
+              ></InputValueField>
+            </Form.Group>
+          )}
+
+          <Button className="btn-dark btn-block" size="" type="submit">
+            Submit
+          </Button>
+        </Form>
+        <div className="border" style={{ padding: "5%", margin: "0 2%" }}>
+          <label>Result: {resultOutput()}</label>
         </div>
-        <label style={headerStyle}>Phase: </label>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            margin: "0 0 1% 0",
-          }}
-        >
-          <SelectButton
-            stateID={"phase"}
-            inputDescription={"Single"}
-            value={"single"}
-            callback={setStateValues}
-            style={buttonStyle}
-          />
-          <SelectButton
-            stateID={"phase"}
-            inputDescription={"Three"}
-            value={"three"}
-            callback={setStateValues}
-            style={buttonStyle}
-          />
-        </div>
-        <div style={{ margin: "0 0 2% 0" }}>
-          <InputValueField
-            stateID="powerfactor"
-            inputDescription="Power Factor: "
-            unit=""
-            setStateValues={setStateValues}
-            headerStyle={headerStyle}
-            componentStyle={{ width: "50%" }}
-            value={state.powerfactor}
-            type={null}
-            errorMessage={errors.powerfactor}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            margin: "0 0 2% 0",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-          }}
-        >
-          {fieldInputDefaults.map((data) => {
-            if (state.calctype !== data.stateID) {
-              return (
-                <>
-                  <InputValueField
-                    type={data.type}
-                    stateID={data.stateID}
-                    inputDescription={data.inputDescription}
-                    unit={data.unit}
-                    value={data.value}
-                    setStateValues={setStateValues}
-                    headerStyle={headerStyle}
-                    componentStyle={{ width: "50%" }}
-                    errorMessage={errors[data.stateID]}
-                  ></InputValueField>
-                </>
-              );
-            } else {
-              return null;
-            }
-          })}
-        </div>
-        <button>Submit</button>
-      </form>
-      <div style={resultStyle}>
-        <label style={headerStyle}>Result: {resultOutput()}</label>
       </div>
     </div>
   );
