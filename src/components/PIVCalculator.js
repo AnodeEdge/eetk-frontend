@@ -12,29 +12,30 @@ const defaultErrors = {
 };
 
 function PIVCalculator(props) {
+  const [state, setState] = useState({
+    calctype: "power",
+    current: undefined,
+    voltage: undefined,
+    power: undefined,
+    powerfactor: "",
+    phase: "three",
+  });
+
+  const [errors, setError] = useState(defaultErrors);
+
   useEffect(() => {
     return () => {
       props.setShowTiles(true);
     };
   }, []);
 
-  const [state, setState] = useState({
-    calctype: "power",
-    current: undefined,
-    voltage: undefined,
-    power: undefined,
-    powerfactor: undefined,
-    phase: "three",
-  });
-
-  useEffect(() => {
+  const clearCalcParams = (evt) => {
+    evt.preventDefault();
     setState((currVal) => ({ ...currVal, ["powerfactor"]: "" }));
     setState((currVal) => ({ ...currVal, ["current"]: "" }));
     setState((currVal) => ({ ...currVal, ["voltage"]: "" }));
     setState((currVal) => ({ ...currVal, ["power"]: "" }));
-  }, [state.calctype]);
-
-  const [errors, setError] = useState(defaultErrors);
+  };
 
   const setStateValues = (data) => {
     setState({
@@ -69,17 +70,14 @@ function PIVCalculator(props) {
   return (
     <div>
       <Jumbotron className style={{ padding: "2rem 2rem" }} fluid>
-        <Container className="w-50">
+        <Container className="w-50" style={{ textAlign: "center" }}>
           <h2>Power, Current, and Voltage Conversion</h2>
         </Container>
       </Jumbotron>
       <div
-        className="w-50"
+        className="w-25"
         style={{
           margin: "0 auto",
-          display: "grid",
-          gridAutoRows: "1fr",
-          gridTemplateColumns: "50% 50%",
         }}
       >
         <Form
@@ -193,14 +191,33 @@ function PIVCalculator(props) {
               ></InputValueField>
             </Form.Group>
           )}
-
-          <Button className="btn-dark btn-block" size="" type="submit">
-            Submit
-          </Button>
+          <Form.Group>
+            <Button
+              className="btn-dark"
+              type="submit"
+              style={{ margin: "0 0.25rem 0 0" }}
+            >
+              Submit
+            </Button>
+            <Button
+              className="btn-dark"
+              type="clear"
+              onClick={clearCalcParams}
+              style={{ margin: "0 1rem 0 0" }}
+            >
+              Reset
+            </Button>
+            <Form.Label className="font-weight-bold h5">
+              {"Result: "}
+              {state[state.calctype] != undefined &&
+                state[state.calctype] != "" &&
+                resultOutput()}
+            </Form.Label>
+          </Form.Group>
         </Form>
-        <div className="border" style={{ padding: "5%", margin: "0 2%" }}>
+        {/* <div className="border" style={{ padding: "5%", margin: "0 2%" }}>
           <label>Result: {resultOutput()}</label>
-        </div>
+        </div> */}
       </div>
     </div>
   );
