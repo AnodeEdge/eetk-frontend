@@ -3,6 +3,7 @@ import DropDown from "./DropDown";
 import InputValueField from "./InputValueField";
 import SelectButton from "./SelectButton";
 import VD from "../helpers/VD";
+import { Form, Button, Jumbotron, Container } from "react-bootstrap";
 
 const inputDefaults = {
   sizes: [],
@@ -20,7 +21,7 @@ const stateDefaults = {
   phase: "three",
   size: "14",
   conductorMaterial: "CU",
-  conduitMaterial: "PVC",
+  conduitMaterial: "STEEL",
   parallelSets: 1,
 };
 
@@ -32,17 +33,13 @@ const defaultErrors = {
   parallelSets: null,
 };
 
-const componentStyle = {
-  margin: "25px 0",
-};
-
-const formStyle = {
-  margin: "0 30% auto",
-  padding: "25px",
-  backgroundColor: "#c3e2e6",
-  display: "flex",
-  flexDirection: "column",
-};
+// const formStyle = {
+//   margin: "0 30% auto",
+//   padding: "25px",
+//   backgroundColor: "#c3e2e6",
+//   display: "flex",
+//   flexDirection: "column",
+// };
 
 export const headerStyle = {
   fontSize: "large",
@@ -105,7 +102,7 @@ function VoltageDrop(props) {
   };
 
   const handleResult = () => {
-    console.log(output.result)
+    console.log(output.result);
     if (output && output.result !== 0) {
       return (
         <>
@@ -120,17 +117,225 @@ function VoltageDrop(props) {
   };
 
   return (
-    <div style={componentStyle}>
-      <div style={{ textAlign: "center", margin: "0 0 1% 0" }}>
-        <label style={{ fontSize: "x-large" }}>Voltage Drop Calculator</label>
-      </div>
-      <form style={formStyle} onSubmit={handleSubmit}>
+    <div>
+      <Jumbotron className style={{ padding: "2rem 2rem" }} fluid>
+        <Container className="w-75" style={{ textAlign: "center" }}>
+          <h2>Voltage Drop</h2>
+        </Container>
+      </Jumbotron>
+      <Form
+        onSubmit={handleSubmit}
+        className="w-75"
+        style={{
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "49% 1% 49%",
+        }}
+      >
+        <div className="border" style={{ padding: "5%" }}>
+          <Form.Label
+            className="font-weight-bold h4"
+            style={{ margin: "0 0 5%", gridRow: "1" }}
+          >
+            System Parameters
+          </Form.Label>
+          <Form.Group style={{ marginBottom: "2.25rem" }}>
+            <Form.Label className="font-weight-bold">Phase </Form.Label>
+            <Form.Row
+              style={{ display: "grid", gridTemplateColumns: "50% 50%" }}
+            >
+              <SelectButton
+                stateID={"phase"}
+                inputDescription={"Three"}
+                value={"three"}
+                callback={setStateValues}
+                style={{ margin: "0 0.25rem" }}
+                selected={state.phase}
+              />
+              <SelectButton
+                stateID={"phase"}
+                inputDescription={"Single"}
+                value={"single"}
+                callback={setStateValues}
+                selected={state.phase}
+              />
+            </Form.Row>
+          </Form.Group>
+          <Form.Group style={{ marginBottom: "2.25rem" }}>
+            <Form.Label className="font-weight-bold">Conductor </Form.Label>
+            <Form.Row
+              style={{ display: "grid", gridTemplateColumns: "50% 50%" }}
+            >
+              <SelectButton
+                stateID={"conductorMaterial"}
+                inputDescription={"Copper"}
+                value={"CU"}
+                callback={setStateValues}
+                style={{ margin: "0 0.25rem 0 0" }}
+                selected={state.conductorMaterial}
+              />
+              <SelectButton
+                stateID={"conductorMaterial"}
+                inputDescription={"Aluminum"}
+                value={"AL"}
+                callback={setStateValues}
+                selected={state.conductorMaterial}
+              />
+            </Form.Row>
+          </Form.Group>
+          <Form.Group style={{ marginBottom: "2.25rem" }}>
+            <Form.Label className="font-weight-bold">
+              Units for Length of Cable Run
+            </Form.Label>
+            <Form.Row
+              style={{ display: "grid", gridTemplateColumns: "50% 50%" }}
+            >
+              <SelectButton
+                stateID={"lengthUnit"}
+                inputDescription={"Feet"}
+                value={"feet"}
+                callback={setStateValues}
+                style={{ margin: "0 0.25rem 0 0" }}
+                selected={state.lengthUnit}
+              />
+              <SelectButton
+                stateID={"lengthUnit"}
+                inputDescription={"Meters"}
+                value={"meters"}
+                callback={setStateValues}
+                selected={state.lengthUnit}
+              />
+            </Form.Row>
+          </Form.Group>
+          <Form.Group style={{ marginBottom: "2.25rem" }}>
+            <Form.Label className="font-weight-bold">
+              Units for Length of Cable Run
+            </Form.Label>
+            <Form.Row
+              style={{ display: "grid", gridTemplateColumns: "33% 33% 33%" }}
+            >
+              <SelectButton
+                stateID={"conduitMaterial"}
+                inputDescription={"Steel"}
+                value={"STEEL"}
+                callback={setStateValues}
+                style={{ margin: "0 0.25rem 0 0" }}
+                selected={state.conduitMaterial}
+              />
+              <SelectButton
+                stateID={"conduitMaterial"}
+                inputDescription={"PVC"}
+                value={"PVC"}
+                callback={setStateValues}
+                style={{ margin: "0 0.25rem 0 0" }}
+                selected={state.conduitMaterial}
+              />
+              <SelectButton
+                stateID={"conduitMaterial"}
+                inputDescription={"Aluminum"}
+                value={"AL"}
+                callback={setStateValues}
+                selected={state.conduitMaterial}
+              />
+            </Form.Row>
+          </Form.Group>
+        </div>
+        <Container></Container>
+        <div className="border" style={{ padding: "5%" }}>
+          <Form.Label
+            className="font-weight-bold h4"
+            style={{ margin: "0 0 5%" }}
+          >
+            Input Parameters
+          </Form.Label>
+          <Form.Group>
+            <Form.Row
+              style={{ display: "grid", gridTemplateColumns: "50% 50%" }}
+            >
+              <InputValueField
+                stateID="voltage"
+                inputDescription="Voltage"
+                unit=" V"
+                setStateValues={setStateValues}
+                value={state.voltage}
+                errorMessage={errors.voltage}
+                componentStyle={{ margin: "0 0.25rem 0 0" }}
+              />
+              <InputValueField
+                stateID="current"
+                inputDescription="Load Current"
+                unit=" A"
+                setStateValues={setStateValues}
+                value={state.current}
+                errorMessage={errors.current}
+              />
+            </Form.Row>
+          </Form.Group>
+          <Form.Group>
+            <Form.Row
+              style={{ display: "grid", gridTemplateColumns: "50% 50%" }}
+            >
+              <InputValueField
+                stateID="powerfactor"
+                inputDescription="Power Factor "
+                unit=""
+                setStateValues={setStateValues}
+                value={state.powerfactor}
+                type={null}
+                errorMessage={errors.powerfactor}
+                placeholder="Enter Power Factor"
+                componentStyle={{ margin: "0 0.25rem 0 0" }}
+              />
+              <InputValueField
+                stateID="parallelSets"
+                inputDescription="Parallel Sets"
+                unit=" Sets"
+                setStateValues={setStateValues}
+                value={state.parallelSets}
+                errorMessage={errors.parallelSets}
+              />
+            </Form.Row>
+          </Form.Group>
+          <Form.Group style={{ marginBottom: "3rem" }}>
+            <Form.Row
+              style={{ display: "grid", gridTemplateColumns: "50% 50%" }}
+            >
+              <InputValueField
+                stateID="length"
+                inputDescription="Length"
+                setStateValues={setStateValues}
+                value={state.length}
+                errorMessage={errors.length}
+                componentStyle={{ margin: "0 0.25rem 0 0" }}
+              />
+              <DropDown
+                stateID="size"
+                inputDescription="Conductor Size"
+                options={inputs.sizes}
+                callback={setStateValues}
+                value={state.size}
+              />
+            </Form.Row>
+          </Form.Group>
+          <Form.Group>
+            <Button
+              className="btn-dark w-50"
+              type="submit"
+              style={{ margin: "0 0.25rem 0 0" }}
+            >
+              Submit
+            </Button>{" "}
+          </Form.Group>
+        </div>
+      </Form>
+
+      {/* <form style={formStyle} onSubmit={handleSubmit}>
         <label style={headerStyle}>Phase: </label>
         <div
           style={{
             display: "flex",
             justifyContent: "space-evenly",
-            margin: "0 0 1% 0",
+            margin: "0 auto",
           }}
         >
           <SelectButton
@@ -249,10 +454,8 @@ function VoltageDrop(props) {
           />
         </div>
         <button>Submit</button>
-      </form>
-      <div style={{ ...formStyle }}>
-        {handleResult()}
-      </div>
+      </form> */}
+      <div>{handleResult()}</div>
     </div>
   );
 }

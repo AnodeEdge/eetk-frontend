@@ -1,6 +1,5 @@
 import React from "react";
 import { Form } from "react-bootstrap";
-import { headerStyle } from "./VoltageDrop";
 function InputValueField(props) {
   // const [inputValue, setValue] = React.useState(props.defaultValue);
 
@@ -28,8 +27,9 @@ function InputValueField(props) {
           onChange={handleChange}
           min={props.min}
           value={props.value}
+          style={props.inputStyle}
         ></Form.Control>
-        <div style={{ height: "2rem" }}>
+        <div style={{ height: "1.25rem" }}>
           {props.errorMessage != null && (
             <text style={{ color: "red" }}>{props.errorMessage}</text>
           )}

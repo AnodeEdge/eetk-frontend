@@ -1,4 +1,5 @@
 import React from "react";
+import { Form } from "react-bootstrap";
 
 function DropDown(props) {
   const [inputValue, setValue] = React.useState();
@@ -15,13 +16,15 @@ function DropDown(props) {
 
   return (
     <div>
-      <label style={props.headerStyle}>{props.inputDescription}</label>
+      <Form.Label className="font-weight-bold">
+        {props.inputDescription}
+      </Form.Label>
       <div>
-        <select id={props.stateID} value={props.value} onChange={handleChange}>
+        <Form.Control as="select" id={props.stateID} value={props.value} onChange={handleChange}>
           {props.options.map((data) => {
             return <option value={data}>{data}</option>;
           })}
-        </select>
+        </Form.Control>
       </div>
     </div>
   );
