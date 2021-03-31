@@ -14,7 +14,6 @@ function References(props) {
       description: "Description",
       to: "/references/ref",
     },
-    { title: "Reference", description: "Description", to: "/references/ref" },
     {
       title: "Equipment Grounding Conductors",
       subtitle: "NEC Table 250.122",

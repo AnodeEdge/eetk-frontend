@@ -12,7 +12,7 @@ function Tile(props) {
     <Card className="tile" onClick={handleClick}>
       <Link style={{ color: "black" }} to={props.to}>
         <Card.Title>{props.title}</Card.Title>
-        <Card.Subtitle>{props.subtitle}</Card.Subtitle>
+        <Card.Subtitle style={{margin: "0 0 0.25rem"}}>{props.subtitle}</Card.Subtitle>
         <Card.Text>{props.description}</Card.Text>
       </Link>
     </Card>
@@ -21,7 +21,7 @@ function Tile(props) {
 
 function TileGrid(props) {
   return (
-    <div className="w-75" style={{margin: "0 auto", display: "grid", gridAutoRows: "1fr", gridTemplateColumns: "50% 50%"}}>
+    <div className="w-50" style={{margin: "0 auto", display: "grid", gridAutoRows: "1fr", gridTemplateColumns: "50% 50%"}}>
       {props.TileData.map((data) => (
         <Tile
           title={data.title}

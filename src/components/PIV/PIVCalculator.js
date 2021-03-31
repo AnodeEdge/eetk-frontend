@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import InputValueField from "./InputValueField";
-import PIV from "../helpers/PIV";
-import SelectButton from "./SelectButton";
+import InputValueField from "../InputValueField";
+import PIV from "../../helpers/PIV";
+import SelectButton from "../SelectButton";
 import { Form, Button, Jumbotron, Container } from "react-bootstrap";
 
 const defaultErrors = {
@@ -69,9 +69,9 @@ function PIVCalculator(props) {
 
   return (
     <div>
-      <Jumbotron className style={{ padding: "2rem 2rem" }} fluid>
-        <Container className="w-50" style={{ textAlign: "center" }}>
-          <h2>Power, Current, and Voltage Conversion</h2>
+      <Jumbotron className style={{ padding: "1rem 1rem" }} fluid>
+        <Container className="w-50 " style={{ textAlign: "center" }}>
+          <h3 className="font-weight-bold">Power, Current, and Voltage Conversion</h3>
         </Container>
       </Jumbotron>
       <div
@@ -215,9 +215,6 @@ function PIVCalculator(props) {
             </Form.Label>
           </Form.Group>
         </Form>
-        {/* <div className="border" style={{ padding: "5%", margin: "0 2%" }}>
-          <label>Result: {resultOutput()}</label>
-        </div> */}
       </div>
     </div>
   );

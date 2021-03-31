@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import DropDown from "./DropDown";
-import InputValueField from "./InputValueField";
-import SelectButton from "./SelectButton";
-import VD from "../helpers/VD";
+import DropDown from "../DropDown";
+import InputValueField from "../InputValueField";
+import SelectButton from "../SelectButton";
+import VD from "../../helpers/VD";
 import { Form, Button, Jumbotron, Container } from "react-bootstrap";
 
 const inputDefaults = {
@@ -13,16 +13,16 @@ const inputDefaults = {
 
 const stateDefaults = {
   calctype: "voltagedrop",
-  current: 100,
-  voltage: 480,
-  length: 100,
+  current: "",
+  voltage: "",
+  length: "",
   lengthUnit: "feet",
-  powerfactor: 1,
+  powerfactor: "",
   phase: "three",
   size: "14",
   conductorMaterial: "CU",
   conduitMaterial: "STEEL",
-  parallelSets: 1,
+  parallelSets: "",
 };
 
 const defaultErrors = {
@@ -32,14 +32,6 @@ const defaultErrors = {
   powerfactor: null,
   parallelSets: null,
 };
-
-// const formStyle = {
-//   margin: "0 30% auto",
-//   padding: "25px",
-//   backgroundColor: "#c3e2e6",
-//   display: "flex",
-//   flexDirection: "column",
-// };
 
 export const headerStyle = {
   fontSize: "large",
@@ -52,8 +44,6 @@ function VoltageDrop(props) {
   const [errors, setErrors] = useState(defaultErrors);
 
   const setStateValues = (data) => {
-    console.log(data);
-
     setState({
       ...state,
       [data.stateID]: data.value,
@@ -103,33 +93,43 @@ function VoltageDrop(props) {
 
   const handleResult = () => {
     console.log(output.result);
-    if (output && output.result !== 0) {
+    console.log(output);
+    if (output.result && output.result !== 0) {
       return (
-        <>
-          <label>Results: </label>
-          <h6>{output.result} </h6>
-          <h6>{output.percent}</h6>
-        </>
+        <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
+          <Form.Label className="h5 font-weight-bold">
+            Voltage Drop: {output.result} V
+          </Form.Label>
+          <Form.Label className="h5 font-weight-bold">
+            Percent: {output.percent}%
+          </Form.Label>
+        </div>
       );
     } else if (output.result === 0) {
-      return <label>Data is unavailable for the selected parameters</label>;
+      return (
+        <Form.Label className="h5 font-weight-bold">
+          Data is unavailable for the selected parameters
+        </Form.Label>
+      );
+    } else {
+      return <div style={{ height: "2rem" }}></div>;
     }
   };
 
   return (
     <div>
-      <Jumbotron className style={{ padding: "2rem 2rem" }} fluid>
+      <Jumbotron className style={{ padding: "1rem 1rem" }} fluid>
         <Container className="w-75" style={{ textAlign: "center" }}>
-          <h2>Voltage Drop</h2>
+          <h3 className="font-weight-bold">Voltage Drop</h3>
         </Container>
       </Jumbotron>
       <Form
         onSubmit={handleSubmit}
-        className="w-75"
+        className="w-50"
         style={{
           margin: "0 auto",
           display: "grid",
-          gridTemplateColumns: "49% 1% 49%",
+          gridTemplateColumns: "49% 2% 49%",
         }}
       >
         <div className="border" style={{ padding: "5%" }}>
@@ -151,6 +151,7 @@ function VoltageDrop(props) {
                 callback={setStateValues}
                 style={{ margin: "0 0.25rem" }}
                 selected={state.phase}
+                type="selectThree"
               />
               <SelectButton
                 stateID={"phase"}
@@ -158,6 +159,7 @@ function VoltageDrop(props) {
                 value={"single"}
                 callback={setStateValues}
                 selected={state.phase}
+                type="selectSingle"
               />
             </Form.Row>
           </Form.Group>
@@ -173,6 +175,7 @@ function VoltageDrop(props) {
                 callback={setStateValues}
                 style={{ margin: "0 0.25rem 0 0" }}
                 selected={state.conductorMaterial}
+                type="selectCU"
               />
               <SelectButton
                 stateID={"conductorMaterial"}
@@ -180,6 +183,7 @@ function VoltageDrop(props) {
                 value={"AL"}
                 callback={setStateValues}
                 selected={state.conductorMaterial}
+                type="selectAL"
               />
             </Form.Row>
           </Form.Group>
@@ -197,6 +201,7 @@ function VoltageDrop(props) {
                 callback={setStateValues}
                 style={{ margin: "0 0.25rem 0 0" }}
                 selected={state.lengthUnit}
+                type="selectFeet"
               />
               <SelectButton
                 stateID={"lengthUnit"}
@@ -204,41 +209,43 @@ function VoltageDrop(props) {
                 value={"meters"}
                 callback={setStateValues}
                 selected={state.lengthUnit}
+                type="selectMeters"
               />
             </Form.Row>
           </Form.Group>
-          <Form.Group style={{ marginBottom: "2.25rem" }}>
-            <Form.Label className="font-weight-bold">
-              Units for Length of Cable Run
-            </Form.Label>
-            <Form.Row
-              style={{ display: "grid", gridTemplateColumns: "33% 33% 33%" }}
-            >
-              <SelectButton
-                stateID={"conduitMaterial"}
-                inputDescription={"Steel"}
-                value={"STEEL"}
-                callback={setStateValues}
-                style={{ margin: "0 0.25rem 0 0" }}
-                selected={state.conduitMaterial}
-              />
-              <SelectButton
-                stateID={"conduitMaterial"}
-                inputDescription={"PVC"}
-                value={"PVC"}
-                callback={setStateValues}
-                style={{ margin: "0 0.25rem 0 0" }}
-                selected={state.conduitMaterial}
-              />
-              <SelectButton
-                stateID={"conduitMaterial"}
-                inputDescription={"Aluminum"}
-                value={"AL"}
-                callback={setStateValues}
-                selected={state.conduitMaterial}
-              />
-            </Form.Row>
-          </Form.Group>
+          <Form.Label className="font-weight-bold">
+            Units for Length of Cable Run
+          </Form.Label>
+          <Form.Row
+            style={{ display: "grid", gridTemplateColumns: "33% 33% 33%" }}
+          >
+            <SelectButton
+              stateID={"conduitMaterial"}
+              inputDescription={"Steel"}
+              value={"STEEL"}
+              callback={setStateValues}
+              style={{ margin: "0 0.25rem 0 0" }}
+              selected={state.conduitMaterial}
+              type="selectSTEEL"
+            />
+            <SelectButton
+              stateID={"conduitMaterial"}
+              inputDescription={"PVC"}
+              value={"PVC"}
+              callback={setStateValues}
+              style={{ margin: "0 0.25rem 0 0" }}
+              selected={state.conduitMaterial}
+              type="selectPVC"
+            />
+            <SelectButton
+              stateID={"conduitMaterial"}
+              inputDescription={"Aluminum"}
+              value={"AL"}
+              callback={setStateValues}
+              selected={state.conduitMaterial}
+              type="selectAL"
+            />
+          </Form.Row>
         </div>
         <Container></Container>
         <div className="border" style={{ padding: "5%" }}>
@@ -260,6 +267,7 @@ function VoltageDrop(props) {
                 value={state.voltage}
                 errorMessage={errors.voltage}
                 componentStyle={{ margin: "0 0.25rem 0 0" }}
+                placeholder="Enter Voltage"
               />
               <InputValueField
                 stateID="current"
@@ -268,6 +276,7 @@ function VoltageDrop(props) {
                 setStateValues={setStateValues}
                 value={state.current}
                 errorMessage={errors.current}
+                placeholder="Enter Load Current"
               />
             </Form.Row>
           </Form.Group>
@@ -293,6 +302,7 @@ function VoltageDrop(props) {
                 setStateValues={setStateValues}
                 value={state.parallelSets}
                 errorMessage={errors.parallelSets}
+                placeholder="Enter Parallel Sets"
               />
             </Form.Row>
           </Form.Group>
@@ -307,6 +317,7 @@ function VoltageDrop(props) {
                 value={state.length}
                 errorMessage={errors.length}
                 componentStyle={{ margin: "0 0.25rem 0 0" }}
+                placeholder="Enter Cable Length"
               />
               <DropDown
                 stateID="size"
@@ -317,145 +328,26 @@ function VoltageDrop(props) {
               />
             </Form.Row>
           </Form.Group>
-          <Form.Group>
-            <Button
-              className="btn-dark w-50"
-              type="submit"
-              style={{ margin: "0 0.25rem 0 0" }}
-            >
-              Submit
-            </Button>{" "}
-          </Form.Group>
+          <Button
+            className="btn-dark w-50"
+            type="submit"
+            style={{ margin: "0 0.25rem 0 0" }}
+          >
+            Submit
+          </Button>
         </div>
       </Form>
-
-      {/* <form style={formStyle} onSubmit={handleSubmit}>
-        <label style={headerStyle}>Phase: </label>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            margin: "0 auto",
-          }}
-        >
-          <SelectButton
-            stateID="phase"
-            inputDescription="Three"
-            value="three"
-            callback={setStateValues}
-          />
-          <SelectButton
-            stateID="phase"
-            inputDescription="Single"
-            value="single"
-            callback={setStateValues}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            margin: "0 0 2% 0",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-          }}
-        >
-          <InputValueField
-            stateID="current"
-            inputDescription="Load Current"
-            unit=" A"
-            setStateValues={setStateValues}
-            componentStyle={{ width: "50%" }}
-            value={state.current}
-            errorMessage={errors.current}
-          />
-          <InputValueField
-            stateID="powerfactor"
-            inputDescription="Power Factor"
-            setStateValues={setStateValues}
-            componentStyle={{ width: "50%" }}
-            value={state.powerfactor}
-            errorMessage={errors.powerfactor}
-          />
-          <InputValueField
-            stateID="voltage"
-            inputDescription="Voltage"
-            unit=" V"
-            setStateValues={setStateValues}
-            componentStyle={{ width: "50%" }}
-            value={state.voltage}
-            errorMessage={errors.voltage}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            margin: "0 0 2% 0",
-            flexDirection: "row",
-            flexWrap: "wrap",
-          }}
-        >
-          <InputValueField
-            stateID="length"
-            inputDescription="Length"
-            setStateValues={setStateValues}
-            componentStyle={{ width: "50%" }}
-            value={state.length}
-            errorMessage={errors.length}
-          />
-          <DropDown
-            stateID="lengthUnit"
-            inputDescription="Length Units"
-            options={["feet", "meters"]}
-            callback={setStateValues}
-            value={state.lengthUnit}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            margin: "0 0 2% 0",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-          }}
-        >
-          <DropDown
-            stateID="size"
-            inputDescription="Conductor Size"
-            options={inputs.sizes}
-            callback={setStateValues}
-            value={state.size}
-          />
-          <DropDown
-            stateID="conductorMaterial"
-            inputDescription="Conductor Material"
-            options={inputs.conductorMaterials}
-            callback={setStateValues}
-            value={state.conductorMaterial}
-          />
-          <DropDown
-            stateID="conduitMaterial"
-            inputDescription="Conduit Material"
-            options={inputs.conduitMaterials}
-            callback={setStateValues}
-            value={state.conduitMaterial}
-          />
-        </div>
-        <div>
-          <InputValueField
-            stateID="parallelSets"
-            inputDescription="Parallel Sets"
-            unit=" Sets"
-            setStateValues={setStateValues}
-            componentStyle={{ width: "50%" }}
-            value={state.parallelSets}
-            errorMessage={errors.parallelSets}
-          />
-        </div>
-        <button>Submit</button>
-      </form> */}
-      <div>{handleResult()}</div>
+      <div className="w-50 border" style={{ margin: "1% auto", padding: "1%" }}>
+        <Form.Row>
+          <Form.Label
+            className="font-weight-bold h4"
+            style={{ margin: "0 0 5%" }}
+          >
+            Results
+          </Form.Label>
+        </Form.Row>
+        {handleResult()}
+      </div>
     </div>
   );
 }
