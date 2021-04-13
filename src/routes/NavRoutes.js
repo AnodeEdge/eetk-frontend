@@ -12,7 +12,7 @@ function NavRoute() {
 
   return (
     <Switch>
-      <Route exact path="/">{<Redirect to="/calculations" />}</Route>
+      {/* <Route exact path="/">{<Redirect to="/calculations" />}</Route> */}
       <Route 
         path="/references" 
         render={() => (
@@ -22,7 +22,7 @@ function NavRoute() {
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route
-        path="/calculations"
+        path="/"
         render={() => (
           <Calculations showTiles={showTiles} setShowTiles={setShowTiles} />
         )}
