@@ -58,7 +58,7 @@ function VoltageDrop(props) {
 
   useEffect(() => {
     handleFetchInputData(
-      "http://127.0.0.1:5000/voltage_drop/inputs",
+      "http://eetk.scott-curtis.com/voltage_drop/inputs",
       "POST",
       setInputs
     );
@@ -84,7 +84,7 @@ function VoltageDrop(props) {
     evt.preventDefault();
     if (VD.dataValidation(setErrors, state, errors)) {
       const results = await fetchData(
-        "http://127.0.0.1:5000/voltage_drop/calc",
+        "http://eetk.scott-curtis.com/voltage_drop/calc",
         "POST"
       );
       setOutputs(results);
@@ -119,17 +119,17 @@ function VoltageDrop(props) {
   return (
     <div>
       <Jumbotron className style={{ padding: "1rem 1rem" }} fluid>
-        <Container className="w-75" style={{ textAlign: "center" }}>
+        <Container className="" style={{ textAlign: "center" }}>
           <h3 className="font-weight-bold">Voltage Drop</h3>
         </Container>
       </Jumbotron>
       <Form
         onSubmit={handleSubmit}
-        className="w-50"
         style={{
           margin: "0 auto",
           display: "grid",
           gridTemplateColumns: "49% 2% 49%",
+          width: "1000px"
         }}
       >
         <div className="border" style={{ padding: "5%" }}>

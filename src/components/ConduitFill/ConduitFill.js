@@ -46,7 +46,7 @@ function ConduitFill(props) {
 
   useEffect(() => {
     handleFetchInputData(
-      "http://127.0.0.1:5000/conduit_fill/inputs",
+      "http://eetk.scott-curtis.com/conduit_fill/inputs",
       "POST",
       setInputOptions
     );
@@ -71,7 +71,7 @@ function ConduitFill(props) {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     const results = await fetchData(
-      "http://127.0.0.1:5000/conduit_fill/calc",
+      "http://eetk.scott-curtis.com/conduit_fill/calc",
       "POST",
       { conduitData: conduitData, conductorData: conductorData }
     );
@@ -110,11 +110,11 @@ function ConduitFill(props) {
       </Jumbotron>
       <Form
         onSubmit={handleSubmit}
-        className="w-50"
         style={{
           margin: "0 auto",
           display: "grid",
           gridTemplateColumns: "49% 2% 49%",
+          width: "800px"
         }}
       >
         <div className="border" style={{ padding: "5%", margin: "0 0 4%" }}>
@@ -145,7 +145,7 @@ function ConduitFill(props) {
           <Button className="btn-dark" onClick={handleSubmit}>Submit</Button>
         </div>
         <Container></Container>
-        <div className="border" style={{ padding: "5%", gridRow: "span 3" }}>
+        <div className="border" style={{ padding: "5%", gridRow: "span 2" }}>
           <Form.Label
             className="font-weight-bold h4"
             style={{ margin: "0 0 1.5rem" }}

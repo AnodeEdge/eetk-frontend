@@ -69,16 +69,14 @@ function PIVCalculator(props) {
 
   return (
     <div>
-      <Jumbotron className style={{ padding: "1rem 1rem" }} fluid>
-        <Container className="w-50 " style={{ textAlign: "center" }}>
+      <Jumbotron className="mx-auto" style={{ padding: "1rem 1rem" }} fluid>
+        <Container style={{ textAlign: "center" }}>
           <h3 className="font-weight-bold">Power, Current, and Voltage Conversion</h3>
         </Container>
       </Jumbotron>
-      <div
-        className="w-25"
-        style={{
-          margin: "0 auto",
-        }}
+      <Container
+        className="mx-auto"
+        style={{width: "800px"}}
       >
         <Form
           className="border"
@@ -215,7 +213,7 @@ function PIVCalculator(props) {
             </Form.Label>
           </Form.Group>
         </Form>
-      </div>
+      </Container>
     </div>
   );
 }
