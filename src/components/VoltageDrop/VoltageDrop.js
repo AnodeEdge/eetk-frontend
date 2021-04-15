@@ -58,7 +58,7 @@ function VoltageDrop(props) {
 
   useEffect(() => {
     handleFetchInputData(
-      "http://eetk.scott-curtis.com/voltage_drop/inputs",
+      "https://eetk.scott-curtis.com/voltage_drop/inputs",
       "POST",
       setInputs
     );
@@ -84,7 +84,7 @@ function VoltageDrop(props) {
     evt.preventDefault();
     if (VD.dataValidation(setErrors, state, errors)) {
       const results = await fetchData(
-        "http://eetk.scott-curtis.com/voltage_drop/calc",
+        "https://eetk.scott-curtis.com/voltage_drop/calc",
         "POST"
       );
       setOutputs(results);

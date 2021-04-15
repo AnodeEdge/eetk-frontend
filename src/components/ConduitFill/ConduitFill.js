@@ -46,7 +46,7 @@ function ConduitFill(props) {
 
   useEffect(() => {
     handleFetchInputData(
-      "http://eetk.scott-curtis.com/conduit_fill/inputs",
+      "https://eetk.scott-curtis.com/conduit_fill/inputs",
       "POST",
       setInputOptions
     );
@@ -71,7 +71,7 @@ function ConduitFill(props) {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     const results = await fetchData(
-      "http://eetk.scott-curtis.com/conduit_fill/calc",
+      "https://eetk.scott-curtis.com/conduit_fill/calc",
       "POST",
       { conduitData: conduitData, conductorData: conductorData }
     );
