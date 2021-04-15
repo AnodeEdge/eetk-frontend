@@ -92,8 +92,6 @@ function VoltageDrop(props) {
   };
 
   const handleResult = () => {
-    console.log(output.result);
-    console.log(output);
     if (output.result && output.result !== 0) {
       return (
         <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
